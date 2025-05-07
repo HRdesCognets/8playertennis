@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tennis Matchup Generator</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input { margin: 4px; padding: 4px; }
+    .match { margin: 8px 0; }
+    .game { margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <h2>4-Game Tennis Meetup Generator</h2>
+  <p>Enter names for 4 men and 4 women:</p>
+  <div>
+    <strong>Men:</strong><br/>
+    <input id="M1" placeholder="M1" />
+    <input id="M2" placeholder="M2" />
+    <input id="M3" placeholder="M3" />
+    <input id="M4" placeholder="M4" />
+  </div>
+  <div>
+    <strong>Women:</strong><br/>
+    <input id="W1" placeholder="W1" />
+    <input id="W2" placeholder="W2" />
+    <input id="W3" placeholder="W3" />
+    <input id="W4" placeholder="W4" />
+  </div>
+  <button onclick="generateSchedule()">Generate Matchups</button>
+  <div id="results"></div>
+
+  <script>
+    const rotation = [
+      [["M1", "W1"], ["M2", "W2"], ["M3", "W3"], ["M4", "W4"]],
+      [["M1", "W2"], ["M3", "W1"], ["M2", "W4"], ["M4", "W3"]],
+      [["M1", "W3"], ["M4", "W2"], ["M2", "W1"], ["M3", "W4"]],
+      [["M1", "W4"], ["M2", "W3"], ["M3", "W2"], ["M4", "W1"]],
+    ];
+
+    function generateSchedule() {
+      const players = {};
+      ["M1","M2","M3","M4","W1","W2","W3","W4"].forEach(id => {
+        players[id] = document.getElementById(id).value || id;
+      });
+
+      const output = rotation.map((round, i) => {
+        return `
+          <div class='game'><strong>Game ${i + 1}</strong><br/>
+            Court 1: ${players[round[0][0]]} & ${players[round[0][1]]} vs ${players[round[1][0]]} & ${players[round[1][1]]}<br/>
+            Court 2: ${players[round[2][0]]} & ${players[round[2][1]]} vs ${players[round[3][0]]} & ${players[round[3][1]]}
+          </div>
+        `;
+      }).join("");
+
+      document.getElementById("results").innerHTML = output;
+    }
+  </script>
+</body>
+</html>
